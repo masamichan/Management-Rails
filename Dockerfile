@@ -7,6 +7,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 WORKDIR /management
 COPY Gemfile /management/Gemfile
 COPY Gemfile.lock /management/Gemfile.lock
+RUN gem install bundler
 RUN bundle install
 COPY . /management
 
