@@ -6,4 +6,7 @@
 $docker-compose up --build
 ```
 
-[ローカル環境]: localhost:3000
+## ローカルホスト
+
+http://management.example.com:3000/
+http://example.com:3000/
