@@ -16,6 +16,8 @@ services:
     ports:
       - "3000:3000"
     working_dir: "/management"
+    environment:
+      - EDITOR=vim
     tty: true
     stdin_open: true
     depends_on:
