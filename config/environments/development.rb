@@ -1,6 +1,11 @@
 Rails.application.configure do
+
+  config.hosts << "localhost"
+
   config.cache_classes = false
+
   config.eager_load = false
+
   config.consider_all_requests_local = true
 
   if Rails.root.join('tmp', 'caching-dev.txt').exist?

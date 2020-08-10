@@ -1,19 +1,29 @@
-FROM ruby:2.6
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-  && apt-get update -qq \
-  && apt-get install -y nodejs yarn \
-  && mkdir /management
-WORKDIR /management
-COPY Gemfile /management/Gemfile
-COPY Gemfile.lock /management/Gemfile.lock
-RUN gem install bundler
-RUN bundle install
-COPY . /management
+FROM ruby:2.6.3
 
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  nodejs \
+  yarn \
+  vim \
+  locales \
+  locales-all \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV LANG ja_JP.UTF-8
+
+RUN mkdir -p /management
+WORKDIR /management
+
+COPY Gemfile Gemfile.lock ./
+
+RUN gem update bundler
+RUN bundle install
+COPY . .
+RUN yarn install --check-files
+RUN bundle exec rails assets:precompile
 
 CMD ["rails", "server", "-b", "0.0.0.0"]
