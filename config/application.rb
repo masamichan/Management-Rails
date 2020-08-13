@@ -25,6 +25,15 @@ module Management
     config.i18n.default_locale = :ja
 
     config.generators do |g|
+      g.test_framework :rspec,
+                       view_specs: false,
+                       helper_specs: false,
+                       controller_specs: false,
+                       routing_specs: false,
+                       request_specs: false
+    end
+
+    config.generators do |g|
       g.skip_routes true
       g.helper false
       g.assets false
