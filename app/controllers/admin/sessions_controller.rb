@@ -3,13 +3,13 @@ class Admin::SessionsController < Admin::Base
     if current_administrator
       redirect_to :admin_root
     else
-      @form = Staff::LoginForm.new
+      @form = Admin::LoginForm.new
       render action: "new"
     end
   end
 
   def create 
-    @form = Admin::LoginForm.new(params[:admin_login_form])
+    @form = Admin::LoginForm.new(login_form_params)
     if @form.email.present?
       administrator = Administrator.find_by("LOWER(email) = ?", @form.email.downcase)
     end
@@ -26,6 +26,10 @@ class Admin::SessionsController < Admin::Base
       flash.now.alert = "メールアドレスまたはパスワードが正しくありません。"
       render action: "new"
     end
+  end
+
+  private def login_form_params
+    params.require(:admin_login_form).permit(:email, :password)
   end
 
   def destroy
