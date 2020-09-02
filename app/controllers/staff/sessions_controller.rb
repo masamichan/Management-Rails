@@ -17,13 +17,15 @@ class Staff::SessionsController < Staff::Base
     end
     if Staff::Authenticator.new(staff_member).authenticate(@form.password)
       if staff_member.suspended?
+        staff_member.events.created!(type: "rejected")
         flash.now.alert = "アカウントが停止されています。"
         render action: "new"
       else
         session[:staff_member_id] = staff_member.id
         session[:last_access_time] = Time.current
-         flash.notice = "ログインしました。"
-         redirect_to :staff_root
+        staff_member.events.created!(type: "logged_in")
+        flash.notice = "ログインしました。"
+        redirect_to :staff_root
       end
     else
       flash.now.alert = "メールアドレスまたはパスワードが正しくありません。"
@@ -36,6 +38,9 @@ class Staff::SessionsController < Staff::Base
   end
 
   def destroy
+    if current_staff_member
+      current_staff_member.created!(type: "logged_out")
+    end
     session.delete(:staff_member_id)
     flash.notice = "ログアウトしました。"
     redirect_to :staff_root
