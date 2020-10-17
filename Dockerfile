@@ -22,6 +22,7 @@ COPY Gemfile Gemfile.lock ./
 
 RUN gem update bundler
 RUN bundle install
+RUN groupadd -r postgres --gid=999 && useradd -r -g postgres --uid=999 postgres
 COPY . .
 RUN yarn install --check-files
 RUN bundle exec rails assets:precompile
