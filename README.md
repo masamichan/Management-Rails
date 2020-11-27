@@ -8,6 +8,6 @@ $docker-compose up --build
 
 ## それぞれのページ
 
-http://management.example.com:3000/admin
-http://management.example.com:3000/staff 
-http://management.example.com:3000/customer
+http://management.example.com:3000/admin  
+http://management.example.com:3000/staff  
+http://management.example.com:3000/customer  
