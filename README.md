@@ -10,4 +10,4 @@ $docker-compose up --build
 
 http://management.example.com:3000/admin  
 http://management.example.com:3000/  
-http://management.example.com:3000/customer  
+http://management.example.com:3000/mypage    
